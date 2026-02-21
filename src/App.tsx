@@ -44,7 +44,7 @@ export default function App() {
           tabs={tabs}
           onSelect={(id) => {
             setTabID(id);
-            setHistory([]); // clear chat when switching tabs
+            setHistory([]); //clear chat when switching tabs
           }}
           reloadTabs={loadTabs}
         />

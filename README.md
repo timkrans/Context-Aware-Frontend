@@ -1,12 +1,12 @@
 # Context-Aware-Frontend 
-This is the frontend to go allong with this context-aware-ai. In this frontend a user may login or sign up and then will be able to see all tabs they have. You need to download Context-Aware-Ai and follow set up steps before using this.
+This is the frontend to go along with this Context-Aware-Ai. In this frontend, a user may log in or sign up  and then will be able to see all tabs they have. You need to download Context-Aware-Ai and follow setup steps before running this application.
 
-## Where to get context-aware-ai 
-1. Go to my githu [github/timkrans/Context-Aware-Ai](https://github.com/timkrans/Context-Aware-AI) or run 
+## Where to get Context-Aware-Ai 
+1. Go to my github [github/timkrans/Context-Aware-Ai](https://github.com/timkrans/Context-Aware-AI) or run 
     ```
     git clone https://github.com/timkrans/Context-Aware-AI
     ```
-2. Read the readme to set up
+2. Read the readme to setup
 3. Start serving both the front and backend servers
 
 ## Ways to run server
@@ -45,5 +45,18 @@ This will create a dist directory.
     http://localhost:8080
     ```
 
+## Images of the frontend
+1. Log in
+![Shows the login page](images/login.png)
+2. Sign up
+![Shows the sign up page](images/sign-up.png)
+3. Adding Tab
+![Shows when a tab is created](images/adding-tab.png)
+4. Clicked on Tab
+![Shows when a tab is clicked on](images/tabs.png)
+5. Response from AI
+![Shows when a tab clicked on with the response](images/tab-response.png)
+
 ## Future enhancements
 - Agent hookup 
+- light mode
