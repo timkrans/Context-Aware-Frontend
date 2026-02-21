@@ -1,0 +1,276 @@
+:root {
+  --bg-dark: #1e1f22;
+  --bg-darker: #18191c;
+  --bg-light: #2a2b31;
+  --text-primary: #e6e6e6;
+  --accent: #4a8cff;
+  --accent-hover: #6ea0ff;
+  --danger: #ff6b6b;
+  --radius: 12px;
+  --max-chat-width: 780px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: "Inter", system-ui, sans-serif;
+  background: var(--bg-dark);
+  color: var(--text-primary);
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* LAYOUT */
+.layout {
+  display: flex;
+  height: 100vh;
+}
+
+/* SIDEBAR */
+.sidebar {
+  width: 260px;
+  background: var(--bg-darker);
+  border-right: 1px solid #2c2c2c;
+  padding: 20px;
+  overflow-y: auto;
+  flex-shrink: 0;
+}
+
+.sidebar h3 {
+  margin: 0 0 15px 0;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.tab-item {
+  padding: 12px 14px;
+  background: var(--bg-light);
+  border-radius: var(--radius);
+  margin-bottom: 10px;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  transition: background 0.15s ease;
+}
+
+.tab-item:hover {
+  background: #3a3b41;
+}
+
+.tab-delete {
+  color: var(--danger);
+  font-weight: bold;
+  cursor: pointer;
+}
+
+/* CHAT AREA */
+.chat-area {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow: hidden;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+.chat-window {
+  flex: 1;
+  width: 100%;
+  max-width: var(--max-chat-width);
+  padding: 30px 0;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.message {
+  width: fit-content;
+  max-width: 80%;
+  padding: 14px 18px;
+  border-radius: var(--radius);
+  line-height: 1.6;
+  font-size: 15px;
+}
+
+.user-msg {
+  background: var(--accent);
+  color: white;
+  margin-left: auto;
+  border-bottom-right-radius: 0;
+}
+
+.ai-msg {
+  background: var(--bg-light);
+  color: var(--text-primary);
+  margin-right: auto;
+  border-bottom-left-radius: 0;
+}
+
+/* INPUT BAR */
+.chat-input-container {
+  width: 100%;
+  max-width: var(--max-chat-width);
+  padding: 18px 0;
+  display: flex;
+  gap: 12px;
+  border-top: 1px solid #2c2c2c;
+}
+
+.chat-input {
+  flex: 1;
+  padding: 14px;
+  border-radius: var(--radius);
+  border: 1px solid #3a3a3a;
+  background: var(--bg-light);
+  color: var(--text-primary);
+  resize: none;
+  height: 55px;
+}
+
+.chat-send {
+  padding: 0 22px;
+  background: var(--accent);
+  border: none;
+  border-radius: var(--radius);
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.chat-send:hover {
+  background: var(--accent-hover);
+}
+
+/* AUTH */
+.auth-container {
+  max-width: 380px;
+  margin: auto;
+  margin-top: 80px;
+  background: var(--bg-darker);
+  padding: 35px;
+  border-radius: var(--radius);
+  border: 1px solid #2c2c2c;
+}
+
+.auth-container input {
+  width: 100%;
+  padding: 14px;
+  margin-bottom: 14px;
+  border-radius: var(--radius);
+  border: 1px solid #3a3a3a;
+  background: var(--bg-light);
+  color: var(--text-primary);
+}
+
+.auth-container button {
+  width: 100%;
+  padding: 14px;
+  background: var(--accent);
+  border: none;
+  border-radius: var(--radius);
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.auth-container button:hover {
+  background: var(--accent-hover);
+}
+/* --- BUTTONS --- */
+
+.button-primary {
+  background: #4f46e5;
+  color: white;
+  padding: 10px 16px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background 0.2s ease;
+}
+
+.button-primary:hover {
+  background: #4338ca;
+}
+
+.button-danger {
+  background: #dc2626;
+  color: white;
+  padding: 10px 16px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background 0.2s ease;
+}
+
+.button-danger:hover {
+  background: #b91c1c;
+}
+
+/* --- TAB INPUT + ADD BUTTON --- */
+
+.tab-input {
+  width: 100%;
+  padding: 8px;
+  margin-top: 10px;
+  border-radius: 6px;
+  border: 1px solid #d1d5db;
+}
+
+.tab-add-btn {
+  margin-top: 8px;
+  width: 100%;
+  background: var(--accent);
+  color: white;
+  padding: 8px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background 0.2s ease;
+}
+
+.tab-add-btn:hover {
+  background: var(--accent-hover);
+}
+
+/* --- FILE UPLOAD BUTTON --- */
+
+.upload-btn {
+  margin-top: 4px;
+  background: #2563eb;
+  color: white;
+  padding: 10px 16px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background 0.2s ease;
+}
+
+.upload-btn:hover {
+  background: #1d4ed8;
+}
+
+/* --- REASONING TOGGLE --- */
+
+.reasoning-toggle {
+  margin-top: 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.reasoning-toggle input {
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+}
