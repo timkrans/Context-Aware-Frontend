@@ -1,7 +1,9 @@
+/*THEME VARIABLES*/
 :root {
   --bg-dark: #1e1f22;
   --bg-darker: #18191c;
   --bg-light: #2a2b31;
+  --tab-hover: #3a3b41;
   --text-primary: #e6e6e6;
   --accent: #4a8cff;
   --accent-hover: #6ea0ff;
@@ -10,6 +12,18 @@
   --max-chat-width: 780px;
 }
 
+[data-theme="light"] {
+  --bg-dark: #f5f7fb;
+  --bg-darker: #ffffff;
+  --bg-light: #eef1f7;
+  --tab-hover: #a4a2a2bf;
+  --text-primary: #1f2937;
+  --accent: #2563eb;
+  --accent-hover: #1e40af;
+  --danger: #dc2626;
+}
+
+/*GLOBAL*/
 * {
   box-sizing: border-box;
 }
@@ -23,14 +37,18 @@ body {
   overflow: hidden;
 }
 
-/* LAYOUT */
+/* =======================
+   LAYOUT
+======================= */
 .layout {
   display: flex;
   height: 100vh;
 }
 
-/* SIDEBAR */
+/*SIDEBAR*/
 .sidebar {
+  display: flex;
+  flex-direction: column;
   width: 260px;
   background: var(--bg-darker);
   border-right: 1px solid #2c2c2c;
@@ -57,7 +75,7 @@ body {
 }
 
 .tab-item:hover {
-  background: #3a3b41;
+  background: var(--tab-hover);
 }
 
 .tab-delete {
@@ -66,15 +84,75 @@ body {
   cursor: pointer;
 }
 
-/* CHAT AREA */
+/*Sidebar bottom actions: logout + theme toggle*/
+.sidebar-actions {
+  margin-top: auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/*THEME SWITCH*/
+.theme-switch {
+  position: relative;
+  width: 52px;
+  height: 28px;
+  display: inline-block;
+}
+
+.theme-switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.theme-slider {
+  position: absolute;
+  cursor: pointer;
+  inset: 0;
+  background-color: #3a3a3a;
+  border-radius: 50px;
+  transition: background-color 0.3s ease;
+}
+
+.theme-slider::before {
+  content: "☀";
+  position: absolute;
+  height: 22px;
+  width: 22px;
+  left: 3px;
+  bottom: 3px;
+  background-color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  transition: transform 0.3s ease;
+}
+
+/*Light/Dark toggle behavior*/
+.theme-switch input:checked + .theme-slider {
+  background-color: #3a3a3a;
+}
+
+.theme-switch input:checked + .theme-slider::before {
+  transform: translateX(24px);
+  content: "🌙";
+}
+
+.theme-switch input:not(:checked) + .theme-slider {
+  background-color: var(--accent);
+}
+
+/*CHAT AREA*/
 .chat-area {
   flex: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
   overflow: hidden;
-  padding-left: 20px;
-  padding-right: 20px;
+  padding: 0 20px;
 }
 
 .chat-window {
@@ -111,7 +189,7 @@ body {
   border-bottom-left-radius: 0;
 }
 
-/* INPUT BAR */
+/*INPUT BAR*/
 .chat-input-container {
   width: 100%;
   max-width: var(--max-chat-width);
@@ -146,11 +224,10 @@ body {
   background: var(--accent-hover);
 }
 
-/* AUTH */
+/*AUTH PAGES*/
 .auth-container {
   max-width: 380px;
-  margin: auto;
-  margin-top: 80px;
+  margin: 80px auto 0;
   background: var(--bg-darker);
   padding: 35px;
   border-radius: var(--radius);
@@ -181,8 +258,8 @@ body {
 .auth-container button:hover {
   background: var(--accent-hover);
 }
-/* --- BUTTONS --- */
 
+/*BUTTONS*/
 .button-primary {
   background: #4f46e5;
   color: white;
@@ -213,8 +290,7 @@ body {
   background: #b91c1c;
 }
 
-/* --- TAB INPUT + ADD BUTTON --- */
-
+/*TABS*/
 .tab-input {
   width: 100%;
   padding: 8px;
@@ -240,8 +316,7 @@ body {
   background: var(--accent-hover);
 }
 
-/* --- FILE UPLOAD BUTTON --- */
-
+/*FILE UPLOAD*/
 .upload-btn {
   margin-top: 4px;
   background: #2563eb;
@@ -258,8 +333,7 @@ body {
   background: #1d4ed8;
 }
 
-/* --- REASONING TOGGLE --- */
-
+/*REASONING TOGGLE*/
 .reasoning-toggle {
   margin-top: 12px;
   display: flex;
