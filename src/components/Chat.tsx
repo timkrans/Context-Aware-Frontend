@@ -13,26 +13,33 @@ export default function Chat({
   setHistory: React.Dispatch<React.SetStateAction<Message[]>>;
 }) {
   const [msg, setMsg] = useState("");
-  const [reasoning, setReasoning] = useState(false); // <-- restored
+  const [reasoning, setReasoning] = useState(false);
 
   const send = async () => {
     if (!msg.trim()) return;
 
     const userMessage = msg;
 
-    // Add user message
+    //add user message
     setHistory((h) => [...h, { role: "user", text: userMessage }]);
     setMsg("");
 
-    // Send to backend WITH reasoning flag
-    const res = await api.post("/chat", {
-      tab_id: tabID,
-      message: userMessage,
-      reasoning: reasoning, // <-- restored
-    });
+    try {
+      const res = await api.post("/chat", {
+        tab_id: tabID,
+        message: userMessage,
+        reasoning: reasoning,
+      });
 
-    // Add AI response
-    setHistory((h) => [...h, { role: "ai", text: res.data.response }]);
+      //add AI response
+      setHistory((h) => [...h, { role: "ai", text: res.data.response }]);
+    } catch (err) {
+      //On error, add a message from AI indicating connection problem
+      setHistory((h) => [
+        ...h,
+        { role: "ai", text: "Could not connect to the AI or embedding model." },
+      ]);
+    }
   };
 
   return (
@@ -60,17 +67,14 @@ export default function Chat({
           Send
         </button>
       </div>
-
-      {/* Reasoning toggle */}
-     <div className="reasoning-toggle">
+      <div className="reasoning-toggle">
         <input
-            type="checkbox"
-            checked={reasoning}
-            onChange={() => setReasoning(!reasoning)}
+          type="checkbox"
+          checked={reasoning}
+          onChange={() => setReasoning(!reasoning)}
         />
         <label>Enable reasoning mode</label>
-    </div>
-
+      </div>
     </>
   );
 }
