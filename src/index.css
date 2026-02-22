@@ -348,3 +348,58 @@ body {
   height: 18px;
   cursor: pointer;
 }
+/*Mobile styles for collapsible tabs*/
+@media (max-width: 768px) {
+  .sidebar {
+    width: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    z-index: 1000;
+    transition: transform 0.3s ease;
+    transform: translateX(-100%);
+  }
+
+  .sidebar.collapsed {
+    transform: translateX(0);
+  }
+
+  .toggle-sidebar-btn {
+    display: inline-block;
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    background-color: var(--accent);
+    color: white;
+    padding: 12px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 18px;
+    z-index: 1100;
+  }
+
+  .toggle-sidebar-btn {
+    display: block;
+  }
+
+  .toggle-sidebar-btn.open {
+    display: inline-block;
+  }
+
+  .sidebar h3 {
+    font-size: 18px;
+  }
+
+  .tab-item {
+    padding: 12px;
+    font-size: 14px;
+  }
+}
+
+/*Hide the sidebar toggle button on larger screens*/
+@media (min-width: 769px) {
+  .toggle-sidebar-btn {
+    display: none;
+  }
+}

@@ -61,7 +61,13 @@ export default function App() {
             <span className="theme-slider"></span>
           </label>
         </div>
-      </div>
+      </div>   
+      <button
+        className="toggle-sidebar-btn"
+        onClick={() => setIsSidebarCollapsed((prev) => !prev)}
+      >
+        {isSidebarCollapsed ? "x" : "☰"}
+      </button>
       <div className="chat-area">
         {tabID ? (
           <>
