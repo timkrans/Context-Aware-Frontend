@@ -17,7 +17,7 @@ export default function App() {
   const [authScreen, setAuthScreen] = useState<"login" | "signup">("login");
   const [history, setHistory] = useState<Message[]>([]);
   const [tabs, setTabs] = useState<any[]>([]);
-  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false); // state for collapsing the sidebar
+  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
   const loadTabs = async () => {
     const res = await api.get("/tabs");
     setTabs(res.data);
@@ -44,12 +44,15 @@ export default function App() {
           currentTabID={tabID}
           onSelect={(id) => {
             setTabID(id);
-            setHistory([]); //clear chat when switching tabs
+            setHistory([]); 
           }}
           reloadTabs={loadTabs}
         />
         <div className="sidebar-actions">
-          <button className="button-danger" onClick={logout}>
+          <button className="button-danger" onClick={() => { 
+            logout(); 
+            setHistory([]); 
+            setTabID(null); }} >
             Logout
           </button>
           <label className="theme-switch">
