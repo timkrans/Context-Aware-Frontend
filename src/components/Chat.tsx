@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, type JSX } from "react";
 import api from "../api/api";
 
 type Message = { role: "user" | "ai"; text: string };
@@ -14,13 +14,50 @@ export default function Chat({
 }) {
   const [msg, setMsg] = useState("");
   const [reasoning, setReasoning] = useState(false);
+  function renderMessage(text: string) {
+  const codeBlockRegex = /```([\s\S]*?)```/g;
 
+  const parts: JSX.Element[] = [];
+  let lastIndex = 0;
+  let match;
+
+  while ((match = codeBlockRegex.exec(text)) !== null) {
+    const before = text.slice(lastIndex, match.index);
+    if (before) {
+      parts.push(<span style={{ whiteSpace: "pre-wrap" }}>{before}</span>);
+    }
+
+    const codeContent = match[1].trim();
+
+    parts.push(
+      <div className="code-block" key={match.index}>
+        <pre>
+          <code>{codeContent}</code>
+        </pre>
+        <button
+          className="copy-btn"
+          onClick={() => navigator.clipboard.writeText(codeContent)}
+        >
+          Copy
+        </button>
+      </div>
+    );
+
+    lastIndex = codeBlockRegex.lastIndex;
+  }
+
+  const after = text.slice(lastIndex);
+  if (after) {
+    parts.push(<span style={{ whiteSpace: "pre-wrap" }}>{after}</span>);
+  }
+
+  return parts;
+}
   const send = async () => {
     if (!msg.trim()) return;
 
     const userMessage = msg;
 
-    //add user message
     setHistory((h) => [...h, { role: "user", text: userMessage }]);
     setMsg("");
 
@@ -31,10 +68,8 @@ export default function Chat({
         reasoning: reasoning,
       });
 
-      //add AI response
       setHistory((h) => [...h, { role: "ai", text: res.data.response }]);
     } catch (err) {
-      //On error, add a message from AI indicating connection problem
       setHistory((h) => [
         ...h,
         { role: "ai", text: "Could not connect to the AI or embedding model." },
@@ -50,7 +85,7 @@ export default function Chat({
             key={i}
             className={`message ${m.role === "user" ? "user-msg" : "ai-msg"}`}
           >
-            {m.text}
+            {renderMessage(m.text)}
           </div>
         ))}
       </div>
@@ -67,6 +102,7 @@ export default function Chat({
           Send
         </button>
       </div>
+
       <div className="reasoning-toggle">
         <input
           type="checkbox"

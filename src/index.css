@@ -3,6 +3,7 @@
   --bg-dark: #1e1f22;
   --bg-darker: #18191c;
   --bg-light: #2a2b31;
+  --code-copy:#54555f;
   --tab-hover: #3a3b41;
   --text-primary: #e6e6e6;
   --accent: #4a8cff;
@@ -17,6 +18,7 @@
   --bg-darker: #ffffff;
   --bg-light: #eef1f7;
   --tab-hover: #a4a2a2bf;
+  --code-copy:#cccfd4;
   --text-primary: #1f2937;
   --accent: #2563eb;
   --accent-hover: #1e40af;
@@ -402,4 +404,50 @@ body {
   .toggle-sidebar-btn {
     display: none;
   }
+}
+
+/*CODE BLOCK STYLING*/
+.code-block {
+  background-color: var( --code-copy);
+  color: var(--text-primary);
+  padding: 12px;
+  border-radius: var(--radius);
+  font-family: 'Courier New', monospace;
+  font-size: 14px;
+  line-height: 1.5;
+  margin-top: 10px;
+  position: relative;
+  white-space: pre-wrap;
+  word-break: break-word;
+  overflow-wrap: break-word;
+  border: 1px solid #2c2c2c;
+  max-width: 100%;
+}
+
+.code-block code {
+  white-space: pre-wrap;
+  display: block;
+}
+
+
+/*Copy button styling*/
+.copy-btn {
+  background-color: var(--accent);
+  color: white;
+  border: none;
+  padding: 6px 10px;
+  font-size: 12px;
+  cursor: pointer;
+  border-radius: 4px;
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.3s ease;
+}
+
+.copy-btn:hover {
+  background-color: var(--accent-hover);
 }
