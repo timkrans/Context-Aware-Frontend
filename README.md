@@ -59,4 +59,3 @@ This will create a dist directory.
 
 ## Future enhancements
 - Agent hookup 
-- light mode
