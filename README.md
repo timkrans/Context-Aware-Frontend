@@ -57,7 +57,7 @@ This will create a dist directory.
 5. Response from AI
 ![Shows when a tab clicked on with the response](images/tab-response.png)
 6. Light mode with copyable code and bold text
-![Light mode with copyable code and bold text](images/light-mode.png))
+![Light mode with copyable code and bold text](images/light-mode.png)
 
 ## Future enhancements
 - Agent hookup 
