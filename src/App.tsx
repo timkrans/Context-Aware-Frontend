@@ -18,6 +18,7 @@ export default function App() {
   const [history, setHistory] = useState<Message[]>([]);
   const [tabs, setTabs] = useState<any[]>([]);
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
+
   const loadTabs = async () => {
     const res = await api.get("/tabs");
     setTabs(res.data);
@@ -37,22 +38,30 @@ export default function App() {
 
   return (
     <div className="layout">
-      <div className={`sidebar ${isSidebarCollapsed ? "collapsed" : ""}`}>
-        <h3>Tabs</h3>
+      <aside className={`sidebar ${isSidebarCollapsed ? "collapsed" : ""}`}>
+        <h1 className="sidebar-brand">
+          Context-Aware-<span>AI</span>
+        </h1>
+        <p className="sidebar-section-label">Contexts</p>
         <Tabs
           tabs={tabs}
           currentTabID={tabID}
           onSelect={(id) => {
             setTabID(id);
-            setHistory([]); 
+            setHistory([]);
           }}
           reloadTabs={loadTabs}
         />
         <div className="sidebar-actions">
-          <button className="button-danger" onClick={() => { 
-            logout(); 
-            setHistory([]); 
-            setTabID(null); }} >
+          <button
+            className="button-danger"
+            type="button"
+            onClick={() => {
+              logout();
+              setHistory([]);
+              setTabID(null);
+            }}
+          >
             Logout
           </button>
           <label className="theme-switch">
@@ -60,30 +69,40 @@ export default function App() {
               type="checkbox"
               checked={theme === "dark"}
               onChange={toggleTheme}
+              aria-label="Toggle dark mode"
             />
-            <span className="theme-slider"></span>
+            <span className="theme-slider" />
           </label>
         </div>
-      </div>   
+      </aside>
+
       <button
         className="toggle-sidebar-btn"
+        type="button"
+        aria-label={isSidebarCollapsed ? "Close sidebar" : "Open sidebar"}
         onClick={() => setIsSidebarCollapsed((prev) => !prev)}
       >
-        {isSidebarCollapsed ? "x" : "☰"}
+        {isSidebarCollapsed ? (
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
+            <path d="M18 6L6 18M6 6l12 12" strokeLinecap="round" />
+          </svg>
+        ) : (
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
+            <path d="M4 7h16M4 12h16M4 17h16" strokeLinecap="round" />
+          </svg>
+        )}
       </button>
+
       <div className="chat-area">
         {tabID ? (
-          <>
-            <Chat
-              tabID={tabID}
-              history={history}
-              setHistory={setHistory}
-            />
+          <div className="chat-panel">
+            <Chat tabID={tabID} history={history} setHistory={setHistory} />
             <FileUpload tabID={tabID} setHistory={setHistory} />
-          </>
+          </div>
         ) : (
-          <div className="chat-window">
-            <p>Select a tab to begin chatting.</p>
+          <div className="chat-window chat-empty">
+            <h2>Select a context</h2>
+            <p>Create or choose a tab from the sidebar to start chatting.</p>
           </div>
         )}
       </div>

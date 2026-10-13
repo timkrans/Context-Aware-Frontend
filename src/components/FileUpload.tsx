@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useId, useState } from "react";
 import api from "../api/api";
 
 type Message = { role: "user" | "ai"; text: string };
@@ -11,27 +11,29 @@ export default function FileUpload({
   setHistory: React.Dispatch<React.SetStateAction<Message[]>>;
 }) {
   const [file, setFile] = useState<File | null>(null);
+  const [uploading, setUploading] = useState(false);
+  const inputId = useId();
 
   const upload = async () => {
-    if (!file) return;
+    if (!file || uploading) return;
 
     const form = new FormData();
     form.append("file", file);
     form.append("tab_id", String(tabID));
 
+    setUploading(true);
     try {
       await api.post("/upload", form, {
         headers: { "Content-Type": "multipart/form-data" },
       });
 
-      //success message from AI
       setHistory((h) => [
         ...h,
         { role: "ai", text: `File "${file.name}" successfully indexed.` },
       ]);
 
-      setFile(null); 
-    } catch (err) {
+      setFile(null);
+    } catch {
       setHistory((h) => [
         ...h,
         {
@@ -39,17 +41,33 @@ export default function FileUpload({
           text: `Could not upload file "${file?.name}": issue connecting to the embedding model.`,
         },
       ]);
+    } finally {
+      setUploading(false);
     }
   };
 
   return (
-    <div style={{ marginTop: "20px" }}>
+    <div className="file-upload">
+      <label
+        className={`file-upload-label${file ? " has-file" : ""}`}
+        htmlFor={inputId}
+      >
+        {file ? file.name : "Choose a file to index…"}
+      </label>
       <input
+        id={inputId}
+        className="file-upload-input"
         type="file"
         onChange={(e) => setFile(e.target.files?.[0] || null)}
+        disabled={uploading}
       />
-      <button className="upload-btn" onClick={upload}>
-        Upload
+      <button
+        className="upload-btn"
+        type="button"
+        onClick={upload}
+        disabled={!file || uploading}
+      >
+        {uploading ? "Uploading…" : "Upload"}
       </button>
     </div>
   );

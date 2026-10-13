@@ -1,4 +1,4 @@
-import { useState, type JSX } from "react";
+import { useEffect, useRef, useState, type JSX, type KeyboardEvent } from "react";
 import api from "../api/api";
 
 type Message = { role: "user" | "ai"; text: string };
@@ -14,6 +14,14 @@ export default function Chat({
 }) {
   const [msg, setMsg] = useState("");
   const [reasoning, setReasoning] = useState(false);
+  const [pending, setPending] = useState(false);
+  const chatRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const el = chatRef.current;
+    if (!el) return;
+    el.scrollTop = el.scrollHeight;
+  }, [history, pending]);
 
   function applyBold(text: string) {
     const boldRegex = /\*\*(.*?)\*\*/g;
@@ -48,6 +56,7 @@ export default function Chat({
           </pre>
           <button
             className="copy-btn"
+            type="button"
             onClick={() => navigator.clipboard.writeText(codeContent)}
           >
             Copy
@@ -74,12 +83,13 @@ export default function Chat({
   }
 
   const send = async () => {
-    if (!msg.trim()) return;
+    if (!msg.trim() || pending) return;
 
     const userMessage = msg;
 
     setHistory((h) => [...h, { role: "user", text: userMessage }]);
     setMsg("");
+    setPending(true);
 
     try {
       const res = await api.post("/chat", {
@@ -89,17 +99,26 @@ export default function Chat({
       });
 
       setHistory((h) => [...h, { role: "ai", text: res.data.response }]);
-    } catch (err) {
+    } catch {
       setHistory((h) => [
         ...h,
         { role: "ai", text: "Could not connect to the AI or embedding model." },
       ]);
+    } finally {
+      setPending(false);
+    }
+  };
+
+  const onKeyDown = (e: KeyboardEvent<HTMLTextAreaElement>) => {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
+      send();
     }
   };
 
   return (
     <>
-      <div className="chat-window">
+      <div className="chat-window" ref={chatRef}>
         {history.map((m, i) => (
           <div
             key={i}
@@ -108,28 +127,43 @@ export default function Chat({
             {renderMessage(m.text)}
           </div>
         ))}
+        {pending && (
+          <div className="message ai-msg pending">Thinking…</div>
+        )}
       </div>
 
-      <div className="chat-input-container">
-        <textarea
-          className="chat-input"
-          value={msg}
-          onChange={(e) => setMsg(e.target.value)}
-          placeholder="Send a message..."
-        />
+      <div className="composer">
+        <div className="chat-input-container">
+          <textarea
+            className="chat-input"
+            value={msg}
+            onChange={(e) => setMsg(e.target.value)}
+            onKeyDown={onKeyDown}
+            placeholder="Send a message..."
+            rows={1}
+            disabled={pending}
+          />
 
-        <button className="chat-send" onClick={send}>
-          Send
-        </button>
-      </div>
+          <button
+            className="chat-send"
+            type="button"
+            onClick={send}
+            disabled={pending || !msg.trim()}
+          >
+            Send
+          </button>
+        </div>
 
-      <div className="reasoning-toggle">
-        <input
-          type="checkbox"
-          checked={reasoning}
-          onChange={() => setReasoning(!reasoning)}
-        />
-        <label>Enable reasoning mode</label>
+        <div className="composer-meta">
+          <label className="reasoning-toggle">
+            <input
+              type="checkbox"
+              checked={reasoning}
+              onChange={() => setReasoning(!reasoning)}
+            />
+            Reasoning mode
+          </label>
+        </div>
       </div>
     </>
   );

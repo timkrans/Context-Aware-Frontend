@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, type FormEvent } from "react";
 import { useAuth } from "../context/AuthContext";
 import { useTheme } from "../context/ThemeContext";
 
@@ -9,50 +9,70 @@ export default function Login({ goToSignup }: { goToSignup: () => void }) {
   const [error, setError] = useState("");
   const { theme, toggleTheme } = useTheme();
 
-  const submit = async () => {
+  const submit = async (e: FormEvent) => {
+    e.preventDefault();
     try {
       setError("");
       await login(username, password);
-    } catch (err: any) {
+    } catch {
       setError("Invalid login. Please check your username and password.");
     }
   };
 
   return (
-    <div className="auth-container">
-      <label className="theme-switch">
-        <input
-          type="checkbox"
-          checked={theme === "dark"}
-          onChange={toggleTheme}
-        />
-        <span className="theme-slider"></span>
-      </label>
+    <div className="auth-page">
+      <form className="auth-container" onSubmit={submit}>
+        <label className="theme-switch auth-theme">
+          <input
+            type="checkbox"
+            checked={theme === "dark"}
+            onChange={toggleTheme}
+            aria-label="Toggle dark mode"
+          />
+          <span className="theme-slider" />
+        </label>
 
-      <h2>Login</h2>
+        <p className="auth-brand">
+          Context-Aware-<span>AI</span>
+        </p>
+        <h2>Sign in to continue</h2>
 
-      {error && (
-        <p style={{ color: "var(--danger)", marginBottom: "10px" }}>{error}</p>
-      )}
+        {error && <p className="auth-error">{error}</p>}
 
-      <input placeholder="Username" onChange={(e) => setU(e.target.value)} />
-      <input
-        placeholder="Password"
-        type="password"
-        onChange={(e) => setP(e.target.value)}
-      />
+        <div className="auth-field">
+          <label htmlFor="login-username">Username</label>
+          <input
+            id="login-username"
+            name="username"
+            autoComplete="username"
+            value={username}
+            onChange={(e) => setU(e.target.value)}
+            required
+          />
+        </div>
 
-      <button onClick={submit}>Login</button>
+        <div className="auth-field">
+          <label htmlFor="login-password">Password</label>
+          <input
+            id="login-password"
+            name="password"
+            type="password"
+            autoComplete="current-password"
+            value={password}
+            onChange={(e) => setP(e.target.value)}
+            required
+          />
+        </div>
 
-      <p style={{ marginTop: "15px", textAlign: "center" }}>
-        Don’t have an account?
-        <span
-          style={{ color: "#4a8cff", cursor: "pointer", marginLeft: "6px" }}
-          onClick={goToSignup}
-        >
-          Sign up
-        </span>
-      </p>
+        <button type="submit">Login</button>
+
+        <p className="auth-footer">
+          Don’t have an account?
+          <button type="button" className="auth-link" onClick={goToSignup}>
+            Sign up
+          </button>
+        </p>
+      </form>
     </div>
   );
 }
